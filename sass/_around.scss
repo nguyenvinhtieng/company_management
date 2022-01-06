@@ -1,0 +1,17 @@
+.around{
+    color: white;
+    width: fit-content;
+    font-size: 12px;
+    padding: 1px 12px;
+    display: inline-block;
+    border-radius: 100rem;
+    &.wait{
+        background: rgb(11,232,129);
+    }
+    &.approved{
+        background: rgb(84,109,229);
+    }
+    &.refused{
+        background: $invalidColor;
+    }
+}

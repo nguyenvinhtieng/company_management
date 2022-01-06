@@ -1,0 +1,21 @@
+.department{
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    &-edit{
+        width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        background-color: white;
+        padding: 24px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        border-radius: 8px;
+    }
+}
+@media (max-width: 520px){
+    .department{
+        &-edit{
+            width: 98%;
+        }
+    }
+}

@@ -1,0 +1,39 @@
+.responsive-table{
+    overflow-x: auto;
+    & table{
+        min-width: 1250px;
+        margin: 0 auto;padding: 0;
+        & thead{
+            & th{
+                padding: 12px 0px;
+                background-color: $primaryColor;
+                color: white;
+                text-align: center;
+            }
+        }
+        & tbody{
+            & tr{
+                cursor: pointer;
+                &:hover{
+                    background-color: rgba(248, 216, 0,0.1);
+                }
+            }
+            & td{
+                padding: 12px 0px;
+                text-align: center;
+            }
+            & .table-operation{
+                & button{
+                    background-color: transparent;
+                    border: none;
+                    outline: none;
+                    margin: 0 4px;
+                }
+                & svg{
+                    width: 25px;
+                    height: 25px;
+                }
+            }
+        }
+    }
+}
