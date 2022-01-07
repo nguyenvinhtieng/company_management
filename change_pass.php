@@ -2,17 +2,15 @@
     session_start();
     require_once('main.php');
     $global_error = "";
-
-    function redirect_user($data_user, $password){
-        $role = $data_user["role"];
-        $username = $data_user["username"];
-        $_SESSION['role'] = $role;
-        if($password == $data_user["username"]){
-            $_SESSION['username_temp'] = $username;
-            header('Location: ./change_pass.php');
-            exit();
-        }
+    $global_message = "Your password is not safe, Please change your password!";
+    if(!isset($_SESSION['username_temp'])){
+        header('Location: ./login.php');
+        exit();
+    }
+    function redirect_user($username){
+        $role = $_SESSION['role'];
         $_SESSION['username'] = $username;
+        unset($_SESSION['username_temp']);
         if($role == "admin"){
             header('Location: ./admin/index.php');
             exit();
@@ -28,22 +26,23 @@
             exit();
         }
     }
-    if(isset($_POST['login'])){
-        $username = $_POST['username'];
+
+    if(isset($_POST['change_pass'])){
+        $global_message = "";
+        $conf_password = $_POST['conf_password'];
         $password = $_POST['password'];
-        if($username == "")
-            $global_error = "Please enter a username";
-        else if($password == "")
-            $global_error = "Please enter a password";
-         else{
-            $result_execute = login($username, $password);
-            if($result_execute["success"]){
-                $data_user = $result_execute["data"];
-                redirect_user($data_user, $password);
-            }else
-                $global_error = $result_execute["message"];
+        if($password == "") $global_error = "Please enter a password";
+        else if($password != $conf_password) $global_error = "Confirm password is not matched";
+        else if(strlen($password) < 8) $global_error = "Password must be at least 8 characters";
+        else if($password == $_SESSION['username_temp']) $global_error = "Password not alowed matched with username";
+        else{
+            $result = change_pass_f( $_SESSION["username_temp"], $password);
+            if($result['success']){
+                redirect_user($_SESSION['username_temp']);
+            }else{
+                $global_error = "Update password failure";
+            }
         }
-        
     }
 ?>
 
@@ -68,20 +67,9 @@
     <div class="login">
         <div class="login-form">
             <form method="POST" action="">
-                <h1>Login</h1>
+                <h1>Change password</h1>
                 <div class="form-group">
-                    <label for="">Username</label>
-                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user"
-                        class="svg-inline--fa fa-user fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 448 512">
-                        <path fill="currentColor"
-                            d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z">
-                        </path>
-                    </svg>
-                    <input type="text" name="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="">Password</label>
+                    <label for="">New password</label>
                     <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="lock"
                         class="svg-inline--fa fa-lock fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 448 512">
@@ -91,10 +79,21 @@
                     </svg>
                     <input type="password" name="password" required>
                 </div>
-                <div>
-                    <button class="" name="login">Login</button>
+                <div class="form-group">
+                    <label for="">Confirm password</label>
+                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="lock"
+                        class="svg-inline--fa fa-lock fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512">
+                        <path fill="currentColor"
+                            d="M400 224h-24v-72C376 68.2 307.8 0 224 0S72 68.2 72 152v72H48c-26.5 0-48 21.5-48 48v192c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V272c0-26.5-21.5-48-48-48zm-104 0H152v-72c0-39.7 32.3-72 72-72s72 32.3 72 72v72z">
+                        </path>
+                    </svg>
+                    <input type="password" name="conf_password" required>
                 </div>
-                
+                <div>
+                    <button class="" name="change_pass">Change</button>
+                </div>
+
                 <?php include './partials/show_message.php';?>
             </form>
         </div>

@@ -8,6 +8,33 @@
     &.wait{
         background: rgb(11,232,129);
     }
+    &.waiting{
+        background: rgb(11,232,129);
+    }
+    &.New{
+        background: #0396ff;
+    }
+    &.progress{
+        background: #DE4313;
+    }
+    &.Submit{
+        background: #00d2ff;
+    }
+    &.Receive{
+        background: #ffc500;
+    }
+    &.Canceled{
+        background: #FC354C;
+    }
+    &.Waiting{
+        background: rgb(11,232,129);
+    }
+    &.Completed{
+        background: #7367F0;
+    }
+    &.Rejected{
+        background: #e05e60;
+    }
     &.approved{
         background: rgb(84,109,229);
     }
